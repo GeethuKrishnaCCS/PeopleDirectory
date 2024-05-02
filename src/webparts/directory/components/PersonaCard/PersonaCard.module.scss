@@ -1,0 +1,86 @@
+@import '~@fluentui/react/dist/sass/References.scss';
+
+.personaContainer {
+  // display: inline-block;
+  margin-top: 15px;
+  margin-right: 15px;
+  width: auto;
+  // min-width: 300px;
+  // max-width: 300px;
+  vertical-align: top;
+}
+
+// .documentCard {
+//   border-color: $ms-color-themeDark;
+//   border-top-width: 5px;
+//   width: 100%;
+//   max-width: 350px;
+//   height: 120px;
+// }
+.persona {
+  padding: 15px;
+}
+
+.bottomColor {
+  background-color: $ms-color-themeDark;
+  height: 5px;
+  margin-top: 10;
+  width: 100%;
+}
+
+.textOverflow {
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.documentCard {
+  width: 300px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  background-color: #ffffff;
+}
+
+.profileContainer {
+  display: flex;
+  flex-direction: column;
+  //   border-color: $ms-color-themeDark;
+  background-color: $ms-color-themeLighter;
+  border-radius: 8px;
+  padding: 16px;
+  // width: 100%;
+}
+
+.profileImage {
+
+  // background-color: $ms-color-themeLighter;
+  // margin-right: 16px;
+  flex-grow: 1;
+}
+
+.profileInfo {
+  flex-grow: 1;
+}
+
+.name {
+  font-weight: bold;
+}
+
+.department,
+.location,
+.phone,
+.email {
+  margin-top: 8px;
+}
+
+.icon {
+  margin-right: 8px;
+  font-size: 16px;
+  color: #0078d4;
+  /* Adjust the color as needed */
+}

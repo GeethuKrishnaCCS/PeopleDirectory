@@ -1,0 +1,21 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "nodeVersion": "14.20.1",
+    "sdksVersions": {
+      "@microsoft/microsoft-graph-client": "3.0.2",
+      "@microsoft/teams-js": "2.9.1"
+    },
+    "version": "1.17.3",
+    "libraryName": "people-directory",
+    "libraryId": "981965f5-9c0d-4e8b-bcd0-d5613a2ed99e",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "people-directory",
+    "solutionShortDescription": "people-directory description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}
