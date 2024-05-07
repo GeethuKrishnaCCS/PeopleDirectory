@@ -80,33 +80,65 @@ export class PersonaCard extends React.Component<
             <Persona
               text={this.props.profileProperties.DisplayName}
               secondaryText={this.props.profileProperties.Title}
-              tertiaryText={this.props.profileProperties.Department}
+              // tertiaryText={this.props.profileProperties.Department}
               imageUrl={this.props.profileProperties.PictureUrl}
               size={PersonaSize.size72}
               imageShouldFadeIn={false}
               imageShouldStartVisible={true}
+              onRenderPrimaryText={(props) => (
+                <span className={styles.boldText}>{props.text}</span>
+              )}
             />
             <br />
           </div>
           <div className={styles.profileInfo}>
-            {/* <div className={styles.name}>{this.props.profileProperties.DisplayName}</div> */}
-            {/* <div className={styles.department}>
-        <Icon iconName="Gear" className={styles.icon} />
-        <span>{this.props.profileProperties.Department}</span>
-      </div> */}
-            {this.props.profileProperties.Location && <div className={styles.location}>
-              <Icon iconName="LocationDot" className={styles.icon} />
-              <span>{this.props.profileProperties.Location ? this.props.profileProperties.Location : 'Not available'}</span>
-            </div>}
-            {this.props.profileProperties.WorkPhone && <div className={styles.phone}>
-              <Icon iconName="Phone" className={styles.icon} />
-              <span>{this.props.profileProperties.WorkPhone ? this.props.profileProperties.WorkPhone : 'Not available'}</span>
-            </div>}
-            {this.props.profileProperties.Email && <div className={styles.email}>
-              <Icon iconName="Mail" className={styles.icon} />
-              <span>{this.props.profileProperties.Email}</span>
-            </div>}
+            {this.props.profileProperties.Department && (
+              <div className={styles.department}>
+                <div className={styles.iconLabel}>
+                  <Icon iconName="People" className={styles.icon} />
+                  <span className={styles.boldText}>Department</span>
+                </div>
+                <div className={styles.iconPlaceholder} />
+                <span>{this.props.profileProperties.Department}</span>
+              </div>
+            )}
+
+            {this.props.profileProperties.Location && (
+              <div className={styles.location}>
+                <div className={styles.iconLabel}>
+                  <Icon iconName="MapPin" className={styles.icon} />
+                  <span className={styles.boldText}>Location</span>
+                </div>
+                <div className={styles.iconPlaceholder} />
+                <span>{this.props.profileProperties.Location}</span>
+              </div>
+            )}
+
+            {this.props.profileProperties.WorkPhone && (
+              <div className={styles.phone}>
+                <div className={styles.iconLabel}>
+                  <Icon iconName="Phone" className={styles.icon} />
+                  <span className={styles.boldText}>Work Phone</span>
+                </div>
+                <div className={styles.iconPlaceholder} />
+                <span>{this.props.profileProperties.WorkPhone}</span>
+              </div>
+            )}
+
+            {this.props.profileProperties.Email && (
+              <div className={styles.email}>
+                <div className={styles.iconLabel}>
+                  <Icon iconName="Mail" className={styles.icon} />
+                  <span className={styles.boldText}>Email</span>
+                </div>
+                <div className={styles.iconPlaceholder} />
+                <span>{this.props.profileProperties.Email}</span>
+              </div>
+            )}
           </div>
+        </div>
+        <div className={styles.bottomColor}>
+
         </div>
       </DocumentCard>
     );

@@ -9,6 +9,7 @@ export interface IDirectoryProps {
   searchProps?: string;
   clearTextSearchProps?: string;
   pageSize?: number;
+  pageRange?: number;
   useSpaceBetween?: boolean;
   cardSettings: cardSettings;
   filterSettings: filterSettings;

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import Pagination from 'react-js-pagination';
 import styles from './Paging.module.scss';
+import { Icon } from '@fluentui/react';
 
 export type PageUpdateCallback = (pageNumber: number) => void;
 
@@ -10,6 +11,7 @@ export interface IPagingProps {
 	itemsCountPerPage: number;
 	onPageUpdate: PageUpdateCallback;
 	currentPage: number;
+	pageRange?: number;
 }
 
 export interface IPagingState {
@@ -33,14 +35,15 @@ const Paging: React.FC<IPagingProps> = (props) => {
 			<div className={styles.searchWp__paginationContainer__pagination}>
 				<Pagination
 					activePage={currentPage}
-					firstPageText={<i className='ms-Icon ms-Icon--DoubleChevronLeft' aria-hidden='true' />}
-					lastPageText={<i className='ms-Icon ms-Icon--DoubleChevronRight' aria-hidden='true' />}
-					prevPageText={<i className='ms-Icon ms-Icon--ChevronLeft' aria-hidden='true' />}
-					nextPageText={<i className='ms-Icon ms-Icon--ChevronRight' aria-hidden='true' />}
+					firstPageText={currentPage === 1 ? null :
+						<Icon iconName="ChevronLeftEnd6" />}
+					lastPageText={<Icon iconName="ChevronRightEnd6" />}
+					prevPageText={currentPage === 1 ? null : <Icon iconName="ChevronLeft" />}
+					nextPageText={<Icon iconName="ChevronRight" />}
 					activeLinkClass={styles.active}
 					itemsCountPerPage={props.itemsCountPerPage}
 					totalItemsCount={props.totalItems}
-					pageRangeDisplayed={5}
+					pageRangeDisplayed={props.pageRange || 3}
 					onChange={_pageChange}
 				/>
 			</div>

@@ -7,7 +7,7 @@ import { IDirectoryState } from "./IDirectoryState";
 import * as strings from "DirectoryWebPartStrings";
 import {
   Spinner, SpinnerSize, MessageBar, MessageBarType, SearchBox, Icon, Label,
-  Dropdown, IDropdownOption, Stack, IStackTokens
+  Dropdown, IDropdownOption, Stack, IStackTokens, PrimaryButton, IconButton, TooltipHost
 } from "@fluentui/react";
 import { debounce } from "throttle-debounce";
 import { WebPartTitle } from "@pnp/spfx-controls-react";
@@ -22,6 +22,7 @@ const wrapStackTokens: IStackTokens = { childrenGap: 30 };
 
 const DirectoryHook: React.FC<IDirectoryProps> = (props) => {
   const _services: ISPServices = new spservices(props.context);
+  // const initialState = React.useRef(false)
   const [az, setaz] = useState<string[]>([]);
   const [alphaKey, setalphaKey] = useState<string>('');
   const [state, setstate] = useState<IDirectoryState>({
@@ -53,13 +54,13 @@ const DirectoryHook: React.FC<IDirectoryProps> = (props) => {
   const [pagedItems, setPagedItems] = useState<any[]>([]);
   const [pageSize, setPageSize] = useState<number>(props.pageSize ? props.pageSize : 10);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [filterSelectDropdownOptions, setFilterSelectDropdownOptions] = useState<IDropdownOption[]>([]);
-  const [selectedFilter, setSelectedFilter] = useState<string>("");
-  const [selectedFilterBy, setSelectedFilterBy] = useState<string>("");
+  const [filterSelectDropdownOptions, setFilterSelectDropdownOptions] = useState<any[]>([]);
+  const [selectedFilters, setSelectedFilter] = useState<any[]>([]);
+  // const [selectedFilterBy, setSelectedFilterBy] = useState<string>("");
   console.log(setSelectedFilter);
-  console.log(setFilterSelectDropdownOptions);
   console.log(filterOptions);
-  
+  console.log(filterSelectDropdownOptions);
+
   const refinerString = props.filterSettings.refiners;
   const refiners = refinerString && refinerString.length > 0 ? refinerString.split(',') : [];
 
@@ -295,56 +296,81 @@ const DirectoryHook: React.FC<IDirectoryProps> = (props) => {
     });
     setstate({ ...state, users: _users, searchString: sortField });
   };
+  //write a function for a button which sorts in ascending and descending order
+  const _changeSortDirection = async (): Promise<void> => {
+    let _users = [...state.users];
+    const reversedArray = _users.reverse();
+    setstate({ ...state, users: reversedArray });
 
-  // const _chooseFilter = async (filterField: string): Promise<void> => {
-  //   let _users = [...state.users];
+  }
+  //   const _chooseFilter = (filterField: string): IDropdownOption[] => {
+  //     let _users = [...state.users];
 
-  //   // Assuming you have an array of user objects in `state.users`
+  //     // Assuming you have an array of user objects in `state.users`
 
-  //   // Extracting unique options for the selected filterField from user objects
-  //   const filterOptions = _users.reduce((options, user) => {
-  //     //eslint-disable-next-line
-  //     if (user.hasOwnProperty(filterField)) {
-  //       const value = user[filterField];
-  //       if (value !== null && !options.includes(value)) {
-  //         options.push(value);
+  //     // Extracting unique options for the selected filterField from user objects
+  //     const filterOptions = _users.reduce((options, user) => {
+  //       //eslint-disable-next-line
+  //       if (user.hasOwnProperty(filterField)) {
+  //         const value = user[filterField];
+  //         if (value !== null && !options.includes(value)) {
+  //           options.push(value);
+  //         }
   //       }
-  //     }
-  //     return options;
-  //   }, []);
-  //   console.log(filterOptions, "fitler options")
-  //   // Now you have `filterOptions` containing unique values for the selected `filterField`
+  //       return options;
+  //     }, []);
+  //     console.log(filterOptions, "filter options");
+  //     // Now you have `filterOptions` containing unique values for the selected `filterField`
 
-  //   // // Set dropdown options based on filterOptions
-  //   const dropdownOptions = filterOptions.map((option: any) => ({
-  //     key: option,
-  //     text: option.toString(), // Convert to string if it's not already`
-  //     // Any other properties you need to set for the dropdown option
-  //   }));
+  //     // Set dropdown options based on filterOptions
+  //     const dropdownOptions = filterOptions.map((option: any) => ({
+  //       key: option,
+  //       text: option.toString(), // Convert to string if it's not already`
+  //       // Any other properties you need to set for the dropdown option
+  //     }));
 
-  //   // Set dropdown options in your Fluent UI dropdown component
-  //   setFilterSelectDropdownOptions(dropdownOptions); // Assuming you have a state setter function for dropdown options
+  //     // Set dropdown options in your Fluent UI dropdown component
+  //     // setFilterSelectDropdownOptions(dropdownOptions); // Assuming you have a state setter function for dropdown options
 
-  //   // Assuming you also have a state variable to store the selected filter value
-  //   await setSelectedFilter(filterField); // Reset selected filter value
+  //     // Assuming you also have a state variable to store the selected filter value
+  //     // setSelectedFilter(filterField); // Reset selected filter value
+  //     return dropdownOptions;
   // };
 
-  // Assuming `setDropdownOptions` and `setSelectedFilter` are state setter functions
-
-  const _filterPeople = async (filterBy: string): Promise<void> => {
+  const _filterPeople = async (filterConditions: any): Promise<void> => {
     let _users = [...state.users];
-    setSelectedFilterBy(filterBy);
-    const filterField = selectedFilter;
-    // Filter users based on the selected filter field
-    _users = _users.filter(user => {
-      // Assuming `filterBy` is the property you want to filter by
-      //eslint-disable-next-line
-      return user.hasOwnProperty(filterField) && user[filterField] === filterBy;
+
+    // Apply each filter condition
+    Object.keys(filterConditions).forEach(filterField => {
+      const filterBy = filterConditions[filterField];
+
+      // Filter users based on the current filter condition
+      _users = _users.filter(user => {
+        // eslint-disable-next-line
+        return user.hasOwnProperty(filterField) && user[filterField] === filterBy;
+      });
     });
 
     // Update state with filtered and sorted users
     setstate({ ...state, users: _users });
   };
+
+
+
+  // const _filterPeople = async (filterBy: string): Promise<void> => {
+  //   let _users = [...state.users];
+  //   setSelectedFilterBy(filterBy);
+  //   const filterField = selectedFilter;
+  //   // Filter users based on the selected filter field
+  //   _users = _users.filter(user => {
+  //     // Assuming `filterBy` is the property you want to filter by
+  //     //eslint-disable-next-line
+  //     return user.hasOwnProperty(filterField) && user[filterField] === filterBy;
+  //   });
+
+  //   // Update state with filtered and sorted users
+  //   setstate({ ...state, users: _users });
+  // };
 
 
   useEffect(() => {
@@ -365,14 +391,44 @@ const DirectoryHook: React.FC<IDirectoryProps> = (props) => {
   }, [props]);
 
   useEffect(() => {
-    // Update dropdown options based on refiners
-    // You may need to modify filterSelectDropdownOptions based on your logic
-    const updatedOptions = refiners.map(refiner => ({
-      key: refiner,
-      text: `Select ${refiner}`,
-    }));
-    setFilterSelectDropdownOptions(updatedOptions);
+    // if(state.users.length === 0 || initialState.current === true) return
+    // initialState.current = true;
+
+    let dropdownOptionsByRefiner: any = {};
+
+    refiners.forEach((refiner) => {
+      let _users = [...state.users];
+      const filterOptions = _users.reduce((options, user) => {
+        if (Object.prototype.hasOwnProperty.call(user, refiner)) {
+          const value = user[refiner];
+          if (value !== null && !options.includes(value)) {
+            options.push(value);
+          }
+        }
+        return options;
+      }, []);
+
+      const dropdownOptions = filterOptions.map((option: any) => ({
+        key: option,
+        text: option.toString(),
+        // Any other properties you need to set for the dropdown option
+      }));
+
+      dropdownOptionsByRefiner[refiner] = dropdownOptions;
+    });
+
+    // Now you have dropdownOptionsByRefiner object with dropdown options for each refiner
+    // Store it in state or use it as needed
+    setFilterSelectDropdownOptions(dropdownOptionsByRefiner);
+
   }, [state.users]);
+
+  const handleClearFiltersClick = () => {
+    //eslint-disable-next-line
+    _searchByAlphabets(true);
+    // setFilterSelectDropdownOptions([])
+    console.log("selectedFilter                   55s", selectedFilters)
+  };
 
   return (
     <div className={styles.directory}>
@@ -432,61 +488,49 @@ const DirectoryHook: React.FC<IDirectoryProps> = (props) => {
                   </div> */}
                   <div className={styles.dropDownSortBy}>
                     <Stack horizontal horizontalAlign="center" wrap tokens={wrapStackTokens}>
-                      <Dropdown
-                        placeholder={strings.DropDownPlaceHolderMessage}
-                        label={strings.DropDownPlaceLabelMessage}
-                        options={orderOptions}
-                        selectedKey={state.searchString}
-                        onChange={(ev, value) => {
-                          // eslint-disable-next-line @typescript-eslint/no-floating-promises
-                          _sortPeople(value.key.toString());
-                        }}
-                        styles={{ dropdown: { width: 200 } }}
-                      />
-                      {/* <Dropdown
-                        // placeholder={strings.DropDownPlaceHolderMessage}
-                        placeholder={'Filter By'}
-                        // label={strings.DropDownPlaceLabelMessage}
-                        label={'Filter'}
-                        options={filterOptions}
-                        selectedKey={selectedFilter}
-                        onChange={(ev, value) => {
-                          // eslint-disable-next-line @typescript-eslint/no-floating-promises
-                          _chooseFilter(value.key.toString());
-                        }}
-                        styles={{ dropdown: { width: 200 } }}
-                      /> */}
-                      {
-                        refiners.map((refiner, index) => (
-                          <React.Fragment key={index}>
-                            <Dropdown
-                              placeholder={`Select ${refiner}`}
-                              options={filterSelectDropdownOptions}
-                              selectedKey={selectedFilterBy}
-                              onChange={(ev, value) => {
-                                // eslint-disable-next-line @typescript-eslint/no-floating-promises
-                                _filterPeople(value.key.toString());
-                              }}
-                              // styles={{ dropdown: { width: 200 } }}
-                            />
-                          </React.Fragment>
-                        ))
-                      }
-
-                      {/* <Dropdown
-                        key={selectedFilter}
-                        // placeholder={strings.DropDownPlaceHolderMessage}
-                        placeholder={`Select ${selectedFilter}`}
-                        // label={strings.DropDownPlaceLabelMessage}
-                        label={`Filter By  ${selectedFilter}`}
-                        options={filterSelectDropdownOptions}
-                        selectedKey={selectedFilterBy}
-                        onChange={(ev, value) => {
-                          // eslint-disable-next-line @typescript-eslint/no-floating-promises
-                          _filterPeople(value.key.toString());
-                        }}
-                        styles={{ dropdown: { width: 200 } }}
-                      /> */}
+                      <div key={filterSelectDropdownOptions.length} style={{ display: 'flex', alignItems: 'center' }}>
+                        {refiners.map((refiner, index) => (
+                          <Dropdown
+                            className={styles.dropdown}
+                            key={refiner}
+                            // label={`Filter By ${refiner}`}
+                            placeholder={`${refiner}`}
+                            // defaultSelectedKey={""}
+                            options={filterSelectDropdownOptions[refiner as keyof typeof filterSelectDropdownOptions]}
+                            // defaultSelectedKey={filterSelectDropdownOptions[refiner as keyof typeof filterSelectDropdownOptions][0]}
+                            selectedKey={filterSelectDropdownOptions[refiner as keyof typeof filterSelectDropdownOptions][0].key || ""}
+                            onChange={(ev, value) => {
+                              // Construct filter conditions object
+                              const filterConditions = {
+                                ...selectedFilters, // existing selected filter conditions
+                                [refiner]: value.key.toString() // new filter condition for the current refiner
+                              };
+                              // eslint-disable-next-line @typescript-eslint/no-floating-promises
+                              _filterPeople(filterConditions);
+                            }}
+                          // styles={{ dropdown: { width: 200, marginRight: '10px' } }}
+                          />
+                        ))}
+                        <PrimaryButton text={'Clear Filters'} onClick={handleClearFiltersClick} />
+                        <Dropdown
+                          placeholder={strings.DropDownPlaceHolderMessage}
+                          // label={strings.DropDownPlaceLabelMessage}
+                          options={orderOptions}
+                          selectedKey={state.searchString}
+                          onChange={(ev, value) => {
+                            // eslint-disable-next-line @typescript-eslint/no-floating-promises
+                            _sortPeople(value.key.toString());
+                          }}
+                          styles={{ dropdown: { width: 200 } }}
+                        />
+                        <div>
+                          <TooltipHost
+                            content="Sort in Ascending or Descending order"
+                          >
+                            <IconButton iconProps={{ iconName: 'Sort' }} aria-label="SortUporDown" onClick={_changeSortDirection} />
+                          </TooltipHost>
+                        </div>
+                      </div>
                     </Stack>
                   </div>
 
@@ -503,11 +547,13 @@ const DirectoryHook: React.FC<IDirectoryProps> = (props) => {
                       totalItems={state.users.length}
                       itemsCountPerPage={pageSize}
                       onPageUpdate={_onPageUpdate}
-                      currentPage={currentPage} />
+                      currentPage={currentPage}
+                      pageRange={props.pageRange}
+                    />
                   </div>
                   <div>
                   </div>
-                  <div>
+                  {/* <div>
                     <h2>Total Users: {state.users.length}</h2>
                     <ul>
                       {state.users.map((user: { FirstName: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal; LastName: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal; Department: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal; }, index: React.Key) => (
@@ -517,7 +563,7 @@ const DirectoryHook: React.FC<IDirectoryProps> = (props) => {
                         </li>
                       ))}
                     </ul>
-                  </div>
+                  </div> */}
                 </>
               )}
             </>

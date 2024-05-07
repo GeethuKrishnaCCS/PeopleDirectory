@@ -75,7 +75,6 @@ export class spservices implements ISPServices {
   }
 
   public async searchUsersNew(searchString: string, srchQry: string, isInitialSearch: boolean): Promise<SearchResults> {
-    debugger;
     let qrytext = '';
     if (isInitialSearch) qrytext = `FirstName:${searchString}* OR LastName:${searchString}*`;
     else {

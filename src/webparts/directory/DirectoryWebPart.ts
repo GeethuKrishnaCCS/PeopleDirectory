@@ -19,6 +19,7 @@ export interface IDirectoryWebPartProps {
     searchProps: string;
     clearTextSearchProps: string;
     pageSize: number;
+    pageRange: number;
     justifycontent: boolean;
     
     showUserPhoto: boolean;
@@ -54,6 +55,7 @@ export default class DirectoryWebPart extends BaseClientSideWebPart<
                 searchProps: this.properties.searchProps,
                 clearTextSearchProps: this.properties.clearTextSearchProps,
                 pageSize: this.properties.pageSize,
+                pageRange: this.properties.pageRange,
                 useSpaceBetween: this.properties.justifycontent,
                 cardSettings: {
                     showUserPhoto: this.properties.showUserPhoto,
@@ -134,6 +136,14 @@ export default class DirectoryWebPart extends BaseClientSideWebPart<
                                     min: 2,
                                     step: 2,
                                     value: this.properties.pageSize
+                                }),
+                                PropertyPaneSlider('pageRange', {
+                                    label: 'Number of Pages Displayed',
+                                    showValue: true,
+                                    max: 10,
+                                    min: 1,
+                                    step: 1,
+                                    value: this.properties.pageRange
                                 })
                             ]
                         },

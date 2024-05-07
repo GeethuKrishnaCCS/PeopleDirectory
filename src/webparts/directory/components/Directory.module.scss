@@ -10,6 +10,7 @@
     vertical-align: "middle";
     margin-bottom: 25;
   }
+
   .noUsers {
     margin-left: "auto";
     margin-right: "auto";
@@ -20,6 +21,7 @@
   .pivotItem {
     overflow-wrap: break-word;
   }
+
   .pivotItem:hover {
     border-style: solid;
     border-width: 1.2;
@@ -103,17 +105,29 @@
     padding-right: 10px;
     white-space: normal;
     text-align: center;
-    &>div>div{
+
+    &>div>div {
       white-space: normal !important;
     }
   }
 
   .searchTextBox {
-      min-width: 180px;
-      max-width: 300px;
-      margin-left: auto;
-      margin-right: auto;
-      margin-bottom: 25px;
+    min-width: 180px;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 25px;
   }
 
+}
+
+.dropdown {
+  width: 200px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: black;
+  color: white;
+  padding: 0 10px;
+  border: none;
+  outline: none;
 }
