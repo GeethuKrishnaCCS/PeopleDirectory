@@ -131,8 +131,10 @@ export class PersonaCard extends React.Component<
                   <Icon iconName="Mail" className={styles.icon} />
                   <span className={styles.boldText}>Email</span>
                 </div>
-                <div className={styles.iconPlaceholder} />
-                <span>{this.props.profileProperties.Email}</span>
+                <div style={{ display: 'inline-flex' }}>
+                  <div className={styles.iconPlaceholder} />
+                  <div style={{ wordBreak: 'break-all' }}>{this.props.profileProperties.Email}</div>
+                </div>
               </div>
             )}
           </div>

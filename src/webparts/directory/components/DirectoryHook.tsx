@@ -108,7 +108,7 @@ const DirectoryHook: React.FC<IDirectoryProps> = (props) => {
                 DisplayName: user.PreferredName,
                 Title: props.cardSettings.showUserJobTitle && user.JobTitle,
                 PictureUrl: props.cardSettings.showUserPhoto && user.PictureURL,
-                Email: user.WorkEmail,
+                Email: user.WorkEmail.toLowerCase(),
                 Department: props.cardSettings.showUserDept && user.Department,
                 WorkPhone: props.cardSettings.showUserPhone && user.WorkPhone,
                 Location: props.cardSettings.showUserLocation && user.BaseOfficeLocation
