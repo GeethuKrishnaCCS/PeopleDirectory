@@ -105,10 +105,6 @@ export default class DirectoryWebPart extends BaseClientSideWebPart<
                                 PropertyPaneTextField("title", {
                                     label: strings.TitleFieldLabel
                                 }),
-                                PropertyPaneToggle("searchFirstName", {
-                                    checked: false,
-                                    label: "Search on First Name ?"
-                                }),
                                 PropertyPaneToggle("justifycontent", {
                                     checked: false,
                                     label: "Result Layout",
@@ -201,11 +197,12 @@ export default class DirectoryWebPart extends BaseClientSideWebPart<
                                     label: "Hide users without office location set?"
                                 }),
                                 PropertyPaneTextField('refiners', {
-                                    label: strings.SearchPropsLabel,
+                                    label: 'Refiners',
                                     // description: strings.SearchPropsDesc,
                                     value: this.properties.refiners,
                                     multiline: false,
-                                    resizable: false
+                                    resizable: false,
+                                    description: strings.ClearTextSearchPropsDesc,
                                 }),
                             ]
                         },
