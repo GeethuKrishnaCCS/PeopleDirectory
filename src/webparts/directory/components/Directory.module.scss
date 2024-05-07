@@ -3,8 +3,9 @@
 .directory {
   .dropDownSortBy {
     margin-bottom: 15px;
-    display: ruby-text;
-
+    // display: ruby-text;
+    display: flex;
+    justify-content: space-between;
   }
 
   .searchBox {
@@ -132,4 +133,16 @@
   padding: 0 10px;
   border: none;
   outline: none;
+}
+
+.filterDiv {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.sortDiv {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
 }

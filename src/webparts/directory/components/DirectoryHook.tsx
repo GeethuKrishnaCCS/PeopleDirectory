@@ -8,7 +8,7 @@ import { IDirectoryState } from "./IDirectoryState";
 import * as strings from "DirectoryWebPartStrings";
 import {
   Spinner, SpinnerSize, MessageBar, MessageBarType, SearchBox, Icon, Label,
-  Dropdown, IDropdownOption, Stack, IStackTokens, IconButton, TooltipHost, IDropdownStyles, ISearchBoxStyles
+  Dropdown, IDropdownOption, IconButton, TooltipHost, IDropdownStyles, ISearchBoxStyles, Stack, IStackTokens
 } from "@fluentui/react";
 import { debounce } from "throttle-debounce";
 import { WebPartTitle } from "@pnp/spfx-controls-react";
@@ -405,7 +405,7 @@ const DirectoryHook: React.FC<IDirectoryProps> = (props) => {
           onChange={(ev, newVal) => _searchBoxChanged(newVal)}
           styles={searchboxStyles} />
         <div className={styles.dropDownSortBy}>
-          {refiners.length > 0 && <Stack key={state.users} horizontal={true} horizontalAlign="start" wrap tokens={wrapStackTokens} >
+          {refiners.length > 0 && <div className={styles.filterDiv}>
             <div key={filterSelectDropdownOptions.length} style={{
               display: 'flex', alignItems: 'center',
               overflow: 'hidden',
@@ -441,8 +441,8 @@ const DirectoryHook: React.FC<IDirectoryProps> = (props) => {
             </div>
             <div className={styles.dropDownSortBy}>
             </div>
-          </Stack>}
-          {state.users.length > 0 && <Stack horizontal horizontalAlign="end" wrap tokens={wrapStackTokens}>
+          </div>}
+          {state.users.length > 0 && <div className={styles.sortDiv}>
             <div key={filterSelectDropdownOptions.length} style={{ display: 'flex', alignItems: 'center' }}>
               <Dropdown
                 placeholder={strings.DropDownPlaceHolderMessage}
@@ -464,7 +464,7 @@ const DirectoryHook: React.FC<IDirectoryProps> = (props) => {
                 </TooltipHost>
               </div>
             </div>
-          </Stack>}
+          </div>}
         </div>
         <div>
         </div>
@@ -511,6 +511,11 @@ const DirectoryHook: React.FC<IDirectoryProps> = (props) => {
                     wrap>
                     {diretoryGrid}
                   </Stack>
+                 
+               
+                {/* <div className={styles.directoryGrid} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(233px, 1fr))', gap: '16px' }}>
+                  {diretoryGrid}
+                </div> */}
 
 
                   <div style={{ width: '100%', display: 'inline-block' }}>
