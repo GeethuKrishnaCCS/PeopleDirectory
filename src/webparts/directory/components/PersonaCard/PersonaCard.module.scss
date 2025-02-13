@@ -47,6 +47,12 @@
   background-color: #ffffff;
 }
 
+@media (max-width: 320px) {
+  .documentCard {
+    width: 200px;
+  }
+}
+
 .profileContainer {
   display: flex;
   flex-direction: column;
@@ -70,10 +76,12 @@
   padding: 16px;
   background-color: $ms-color-themeLighter;
 }
+
 .iconPlaceholder {
   display: inline-block;
   width: 1.5em;
 }
+
 .name {
   font-weight: bold;
 }

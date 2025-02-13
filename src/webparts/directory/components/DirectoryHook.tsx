@@ -18,8 +18,8 @@ import { ISPServices } from "../../../SPServices/ISPServices";
 import { IDirectoryProps } from './IDirectoryProps';
 import Paging from './Pagination/Paging';
 
-
 const wrapStackTokens: IStackTokens = { childrenGap: 30 };
+const stackGap10px: IStackTokens = { childrenGap: 10 };
 
 const DirectoryHook: React.FC<IDirectoryProps> = (props) => {
   const _services: ISPServices = new spservices(props.context);
@@ -108,7 +108,7 @@ const DirectoryHook: React.FC<IDirectoryProps> = (props) => {
                 DisplayName: user.PreferredName,
                 Title: props.cardSettings.showUserJobTitle && user.JobTitle,
                 PictureUrl: props.cardSettings.showUserPhoto && user.PictureURL,
-                Email: user.WorkEmail.toLowerCase(),
+                Email: user.WorkEmail?.toLowerCase(),
                 Department: props.cardSettings.showUserDept && user.Department,
                 WorkPhone: props.cardSettings.showUserPhone && user.WorkPhone,
                 Location: props.cardSettings.showUserLocation && user.BaseOfficeLocation
@@ -356,6 +356,24 @@ const DirectoryHook: React.FC<IDirectoryProps> = (props) => {
   };
 
   const dropdownStyles: Partial<IDropdownStyles> = {
+    root: {
+      selectors: {
+        // ':hover .ms-Dropdown-title': {
+        //   color: 'white', 
+        // },
+        ':hover .ms-Dropdown-title': {
+          // backgroundColor: 'inherit',
+          color: 'inherit'
+        },
+        ':focus .ms-Dropdown-title': {
+          // backgroundColor: 'inherit',
+          color: 'inherit'
+        },
+        ':hover .ms-Dropdown-caretDownWrapper': {
+          color: 'inherit'
+        },
+      }
+    },
     title: {
       borderRadius: 100,
       borderWidth: 2,
@@ -363,9 +381,10 @@ const DirectoryHook: React.FC<IDirectoryProps> = (props) => {
       height: 30,
       lineHeight: 30,
       paddingLeft: 20,
-      color: "white",
+      // color: "inherit",
       fontSize: 14,
-      backgroundColor: "black",
+      // backgroundColor: "inherit",
+
     },
     caretDownWrapper: {
       height: 30,
@@ -374,13 +393,13 @@ const DirectoryHook: React.FC<IDirectoryProps> = (props) => {
     },
     caretDown: {
       fontSize: 17,
-      color: "white",
+      // color: "white",
       width: "auto"
     },
     label: {
       color: "#323338",
       fontSize: 1
-    },
+    }
   };
   const searchboxStyles: Partial<ISearchBoxStyles> = {
     root: {
@@ -394,6 +413,28 @@ const DirectoryHook: React.FC<IDirectoryProps> = (props) => {
       fontSize: 16,
     }
   };
+  //   const isSmallScreen = useMediaQuery({ query: '(max-width: 1823px)' });
+
+  //   useEffect(() => {
+  //     if (isSmallScreen) {
+  //       const screenWidth = window.innerWidth;
+  //       for (let i = 2000; i >= 0; i--) {
+  //         if (i <= screenWidth) {
+  //           console.log(`${i}px true`);
+  //           break; // Log only once for the current screen width
+  //         }
+  //       }
+  //     }
+  //   }, [isSmallScreen]);
+
+  //   const isDesktopOrLaptop = useMediaQuery({
+  //     query: '(min-width: 1224px)'
+  //   })
+  //   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+  //   const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
+  //   const isRetina = useMediaQuery({ query: '(min-resolution: 2dppx)' })
+  //   console.log(isDesktopOrLaptop, isTabletOrMobile, isPortrait, isRetina);
+  // debugger;
   return (
     <div className={styles.directory}>
       <WebPartTitle displayMode={props.displayMode} title={props.title}
@@ -407,30 +448,35 @@ const DirectoryHook: React.FC<IDirectoryProps> = (props) => {
         <div className={styles.dropDownSortBy}>
           {refiners.length > 0 && <div className={styles.filterDiv}>
             <div key={filterSelectDropdownOptions.length} style={{
-              display: 'flex', alignItems: 'center',
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
               overflow: 'hidden',
-              flexWrap: 'wrap',
-              gap: '10px'
             }} >
-              {refiners.map((refiner, index) => (
-                <Dropdown
-                  key={refiner}
-                  placeholder={`${refiner}`}
-                  options={filterSelectDropdownOptions[refiner as keyof typeof filterSelectDropdownOptions]}
-                  selectedKey={selectedFilters[refiner as any] || ""}
-                  calloutProps={{ calloutWidth: undefined, calloutMinWidth: 100, calloutMaxWidth: 440 }}
-                  onChange={(ev, value) => {
-                    const filterConditions = {
-                      ...selectedFilters, // existing selected filter conditions
-                      [refiner]: value.key.toString()
-                    };
-                    setSelectedFilter(filterConditions)
+              <Stack
+                horizontal
+                wrap
+                tokens={stackGap10px}>
+                {refiners.map((refiner, index) => (
+                  <Dropdown
+                    key={refiner}
+                    placeholder={`${refiner}`}
+                    options={filterSelectDropdownOptions[refiner as keyof typeof filterSelectDropdownOptions]}
+                    selectedKey={selectedFilters[refiner as any] || ""}
+                    calloutProps={{ calloutWidth: undefined, calloutMinWidth: 100, calloutMaxWidth: 440 }}
+                    onChange={(ev, value) => {
+                      const filterConditions = {
+                        ...selectedFilters, // existing selected filter conditions
+                        [refiner]: value.key.toString()
+                      };
+                      setSelectedFilter(filterConditions)
 
-                    _filterPeople(filterConditions);
-                  }}
-                  styles={dropdownStyles}
-                />
-              ))}
+                      _filterPeople(filterConditions);
+                    }}
+                    styles={dropdownStyles}
+                  />
+                ))}
+              </Stack>
               <div>
                 <TooltipHost
                   content="Clear All Filters"
@@ -511,9 +557,9 @@ const DirectoryHook: React.FC<IDirectoryProps> = (props) => {
                     wrap>
                     {diretoryGrid}
                   </Stack>
-                 
-               
-                {/* <div className={styles.directoryGrid} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(233px, 1fr))', gap: '16px' }}>
+
+
+                  {/* <div className={styles.directoryGrid} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(233px, 1fr))', gap: '16px' }}>
                   {diretoryGrid}
                 </div> */}
 
