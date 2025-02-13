@@ -39,6 +39,7 @@ export class spservices implements ISPServices {
   public async searchUsers2(): Promise<SearchResults> {
     const _search = "*";
     const searchProperties: string[] = ["FirstName", "LastName", "PreferredName", "WorkEmail", "OfficeNumber", "PictureURL", "WorkPhone", "MobilePhone", "JobTitle", "Department", "Skills", "PastProjects", "BaseOfficeLocation", "SPS-UserType", "GroupId"];
+    console.log("")
     try {
       const users = await sp.searchWithCaching(<ISearchQuery>{
         Querytext: _search,
